@@ -1,0 +1,20 @@
+﻿@{
+	ViewData["Title"] = "Intro";
+}
+
+<div class="text-center">
+	<h1 class="display-4">
+		Вступ до ASP
+	</h1>
+</div>
+
+<p>
+	<b>ASP</b> - Active Server Pages - фрейворк .NET для створення веб-застосунків.
+</p>
+<p>
+	Відмінністю формування коду у залежності від параметрів запиту,
+	наприклад на запит <code>/Home/Intro</code> здіснюється пошук
+	класу <code>HomeController</code> (де Home - це перша частина запиту),
+	а в цьому класі цукається метод (action) <code>public IActionResult Intro()</code>,
+	(де Intro - це друга частина запиту)
+</p>

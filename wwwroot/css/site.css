@@ -1,0 +1,65 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.auth-letter {
+    background-color: purple;
+    border-radius: 50%;
+    color: snow;
+    display: inline-block;
+    padding: 0.1em 0.6em;
+}
+
+.card-body {
+    position: relative;
+}
+
+.card-fab {
+    align-items: center;
+    background-color: mediumaquamarine;
+    border-radius: 50%;
+    display: flex;
+    justify-content:center;
+    position: absolute;
+    right: 1em;
+    top: -1em;
+    height: 2.5em;
+    width: 2.5em;
+}
+
+.cart-product-img {
+    width: 99%;
+    max-height: 5em;
+    max-width: 7em;
+}
+
+.popular-products-container {
+    position: relative;
+    left:5%;
+    padding-top: 32%;
+}
+
+.popular-products-link {
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+}

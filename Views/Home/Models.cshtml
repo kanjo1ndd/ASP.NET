@@ -1,0 +1,158 @@
+﻿@* @using ASP_SPR311.Models.Home *@
+@using ASP_SPR311.Models.Home
+@model HomeModelsViewModel
+@{
+    ViewData["Title"] = "Models";
+}
+
+<div class="text-center">
+    <h1 class="display-4">4. Обіг даних. Моделі</h1>
+</div>
+
+<p>
+    Моделі в ASP - це класи (або об'єкти), які призначені для передачі даних
+    між різними частинами проєкту. Умовно розрізняють 
+</p>
+
+<ul>
+    <li>
+        Моделі представлень - дані, що необхідні для формування сторінки-представлення
+        (від контролера до представлення)
+    </li>
+    <li>
+        Моделі форм - дані, що передаються від клієнтської частини (від представлення 
+        до контролера), зазвичай, введені користувачем
+    </li>
+    <li>
+        Моделі даних (Entities) - дані, що передаються від/до постійного сховища.
+    </li>
+</ul>
+
+<h2>Моделі форм. Дані від користувача</h2>
+
+<p>
+    Надсилання форм може здійснюватися двома способами - традиційно HTML-формою та
+    асинхронним AJAX (fetch) запитом.
+</p>
+
+<h3>Надсилання форми HTML</h3>
+
+<form asp-action="Register">
+    Ім'я: <input name="user-name" value="@Model.FormModel?.UserName" /><br/>
+    E-mail: <input type="email" name="user-email" value="@Model.FormModel?.UserEmail" /><br />
+    <button>Надіслати</button>
+</form>
+
+@if (Model.FormModel != null)
+{
+    <p>Передано дані: @Model.FormModel.UserName, @Model.FormModel.UserEmail</p>
+}
+
+<h3>Асинхронне надсилання форми AJAX</h3>
+<form id="ajax-form">
+    Ім'я: <input name="user-name" /><br/>
+    E-mail: <input type="email" name="user-email" /><br />
+    <button>Надіслати</button>
+</form>
+
+<p id="out-1"></p>
+<p id="out-2"></p>
+
+<script>
+    document.addEventListener(
+        'submit', e => {
+            const form = e.target;
+            if(form.id == 'ajax-form') {
+                e.preventDefault();
+
+                const body = {
+                    "userName": form.querySelector('[name="user-name"]').value,
+                    "userEmail": form.querySelector('[name="user-email"]').value,
+                }
+
+                const formData = new FormData(form);
+
+                fetch( "/Home/AjaxJson", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(r => r.json())
+                .then(j => {
+                    console.log("AJAX-JSON", j);
+                    document.getElementById("out-1").innerText =
+                    `Одержані по JSON дані: userName='${j.userName}', userEmail='${j.userEmail}'`;
+                });
+
+
+                fetch( "/Home/Ajax", {
+                     method: "POST",
+                     body: formData
+                })
+                .then(r => r.json())
+                .then(j => {
+                    console.log("AJAX", j);
+                     document.getElementById("out-2").innerText =
+                    `Одержані по FORM дані: userName='${j.userName}', userEmail='${j.userEmail}'`;
+                });
+            }
+        }
+     );
+</script>
+
+@* <h3>Залишити відгук про товар</h3>
+<form id="review-form">
+    Автор: <input name="author" /><br />
+    Коментар: <textarea name="comment"></textarea><br />
+    Оцінка (1-5): <input type="number" name="rating" min="1" max="5" /><br />
+    Дата: <input type="date" name="date" /><br />
+    <button>Надіслати</button>
+</form>
+
+<p id="out-1"></p>
+<p id="out-2"></p>
+
+<script>
+document.addEventListener('submit', e => {
+    const form = e.target;
+    if (form.id === 'review-form') {
+        e.preventDefault();
+
+        const body = {
+            author: form.querySelector('[name="author"]').value,
+            comment: form.querySelector('[name="comment"]').value,
+            rating: parseInt(form.querySelector('[name="rating"]').value),
+            date: form.querySelector('[name="date"]').value
+        };
+
+        const formData = new FormData(form);
+
+        fetch("/Home/SubmitReviewJson", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+        .then(r => r.json())
+        .then(j => {
+            console.log("AJAX-JSON", j);
+            document.getElementById("out-1").innerText =
+                `Одержані по JSON дані: Автор='${j.author}', Коментар='${j.comment}', Оцінка=${j.rating}, Дата=${j.date}`;
+        });
+
+        fetch("/Home/SubmitReviewForm", {
+            method: "POST",
+            body: formData
+        })
+        .then(r => r.json())
+        .then(j => {
+            console.log("AJAX", j);
+            document.getElementById("out-2").innerText =
+                `Одержані по FORM дані: Автор='${j.author}', Коментар='${j.comment}', Оцінка=${j.rating}, Дата=${j.date}`;
+        });
+    }
+});
+</script> *@

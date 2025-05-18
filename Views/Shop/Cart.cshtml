@@ -1,0 +1,112 @@
+﻿@model ASP_SPR311.Models.Shop.ShopCartViewModel
+
+@{
+	ViewData["Title"] = "Cart";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Мій кошик</h1>
+</div>
+
+@if (Model.RecommendedProducts != null && Model.RecommendedProducts.Any())
+{
+        <hr />
+        <h3>Вас також може зацікавити</h3>
+        <div class="row">
+            @foreach (var product in Model.RecommendedProducts)
+            {
+                var imageUrl = product.ImagesCsv?.Split(',').FirstOrDefault();
+                if (imageUrl != null && !imageUrl.StartsWith("/"))
+                {
+                    imageUrl = "/Shop/Image/" + imageUrl;
+                }
+                <div class="col-md-3">
+                    <div class="card">
+                        <img class="card-img-top" src="@imageUrl" alt="@product.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Price.ToString("0.00") грн</p>
+                            <a asp-controller="Shop" 
+                                asp-action="Product" 
+                                asp-route-id="@(product.Slug ?? product.Id.ToString())" class="btn btn-primary">
+                                    Детальніше
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+}
+
+@if (!User.Identity!.IsAuthenticated)
+{
+        <div class="alert alert-warning" role="alert">
+            Ви не авторизовані! Будь ласка, <a href="/Account/Login">увійдіть</a>, щоб переглянути кошик.
+        </div>
+}
+else if (Model.Cart == null || Model.Cart.CartItems == null || !Model.Cart.CartItems.Any())
+{
+        <h2>Ваш кошик порожній</h2>
+            <div class="row">
+            <div class="col offset-5 col-1">
+                <a asp-controller="Shop" asp-action="Index" class="btn btn-primary">До крамниці</a>
+            </div>
+        </div>
+}
+else
+{
+    var totalQuantity = Model.Cart.CartItems.Sum(ci => ci.Quantity);
+    var totalPrice = Model.Cart.CartItems.Sum(ci => ci.Quantity * ci.Product.Price);
+    var positionText = GetUkrainianPlural(totalQuantity, "позиція", "позиції", "позицій");
+
+        <h2>У вашому кошику @totalQuantity @positionText</h2>
+        <hr/>
+
+    @foreach (var item in Model.Cart.CartItems)
+    {
+        @Html.DisplayFor(m => item, "CartItem")
+    }
+    <hr/>
+    <div class="row">
+        <div class="col offset-4 col-1">Разом</div>
+        <div class="col col-1">@totalQuantity</div>
+        <div class="col col-1">@totalPrice.ToString("0.00")</div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <form asp-controller="Shop" asp-action="PurchaseCart" method="post">
+                <input type="hidden" name="cartId" value="@Model.Cart.Id" />
+                <button type="submit" class="btn btn-success">Придбати</button>
+            </form>
+        </div>
+        <div class="col">
+            <form asp-controller="Shop" asp-action="CancelCart" method="post">
+                <input type="hidden" name="cartId" value="@Model.Cart.Id" />
+                <button type="submit" class="btn btn-danger">Скасувати</button>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+            <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+    }
+}
+
+@functions {
+    private string GetUkrainianPlural(int number, string singular, string dual, string plural)
+    {
+        if (number % 10 == 1 && number % 100 != 11)
+            return singular;
+        else if (number % 10 >= 2 && number % 10 <= 4 && (number % 100 < 10 || number % 100 >= 20))
+            return dual;
+        else
+            return plural;
+    }
+}

@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    String? canCreate = Context.User.Claims
+                .FirstOrDefault(c => c.Type == "CanCreate")?.Value;
+}
+
+<div class="text-center">
+    <h1 class="display-4">ASP</h1>
+    
+</div>
+
+<h2>Зміст</h2>
+
+<h3><a href="/Home/Intro">1. Вступ</a></h3>
+
+<h3><a asp-controller="Home" asp-action="Razor">2. Синтаксис Razor</a></h3>
+
+<h3><a asp-controller="Home" asp-action="IoC">3. Інверсія управління</a></h3>
+
+<h3><a asp-controller="Home" asp-action="Models">4. Обіг даних. Моделі</a></h3>
+
+<h3><a asp-controller="Shop" >5. Крамниця</a></h3>
+
+@* @model string
+Одноразовий пароль: @Model *@
+
+@if (canCreate == "1")
+{
+    <h3><a asp-controller="Admin">6. Панель адміністратора</a></h3>
+}
+
+<div class="popular-products-container">
+    <h3><a asp-controller="Shop" asp-action="PopularProducts" class="popular-products-link">Популярні товари</a></h3>
+</div>

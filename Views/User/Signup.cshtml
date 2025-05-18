@@ -1,0 +1,307 @@
+﻿@model ASP_SPR311.Models.User.UserSignupViewModel
+@{
+    ViewData["Title"] = "Signup Page";
+    bool hasData = Model.FormModel != null;
+    bool isValid = Model.ValidationErrors?.Count() == 0;
+    String validityClass;
+    String fieldName;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Сторінка реєстрації користувача</h1>
+</div>
+
+<br/>
+@Model.ValidationErrors?.Count()
+@if(hasData && isValid)
+{
+    <h2>Вітаємо з реєстрацією!</h2>
+}
+
+<form asp-controller="User" asp-action="Register">
+     <div class="row justify-content-center">
+        <div class="col-8">
+
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        @{
+                            fieldName = nameof(Model.FormModel.UserName);
+                            validityClass = Model.ValidationErrors == null
+                            ? ""
+                            : Model.ValidationErrors!.ContainsKey(fieldName)
+                              ? "is-invalid"
+                              : "is-valid";
+                        }
+                        <span class="input-group-text" id="UserName-addon"><i class="bi bi-person-vcard"></i></span>
+                        <input type="text" class="form-control @validityClass" value="@Model.FormModel?.UserName"
+                               name="UserName" placeholder="UserName" 
+                               aria-label="UserName" aria-describedby="UserName-addon">
+
+                        @if (Model.ValidationErrors?.ContainsKey(fieldName) ?? false)
+                        {
+                            <div class="invalid-feedback">
+                                @Model.ValidationErrors[fieldName]
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        @{
+                            fieldName = nameof(Model.FormModel.UserEmail);
+                            validityClass = Model.ValidationErrors == null
+                            ? ""
+                            : Model.ValidationErrors!.ContainsKey(fieldName)
+                              ? "is-invalid"
+                              : "is-valid";
+                        }
+                        <span class="input-group-text" id="UserEmail-addon"><i class="bi bi-envelope-at"></i></span>
+                        <input type="text" class="form-control @validityClass" value="@Model.FormModel?.UserEmail"
+                               name="UserEmail" placeholder="UserEmail" 
+                               aria-label="UserEmail" aria-describedby="UserEmail-addon">
+
+                        @if (hasData && !isValid && Model.ValidationErrors!.ContainsKey(fieldName))
+                        {
+                            <div class="invalid-feedback">
+                                @Model.ValidationErrors[fieldName]
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                @{
+                    fieldName = nameof(Model.FormModel.UserPhone);
+                    validityClass = Model.ValidationErrors == null
+                    ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                <span class="input-group-text" id="UserPhone-addon"><i class="bi bi-telephone"></i></span>
+                <input type="text" class="form-control @validityClass" value="@Model.FormModel?.UserPhone"
+                       name="UserPhone" placeholder="UserPhone" 
+                       aria-label="UserPhone" aria-describedby="UserPhone-addon">
+
+                @if (hasData && !isValid && Model.ValidationErrors!.ContainsKey(fieldName))
+                {
+                    <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                    </div>
+                }
+            </div>
+        </div>
+            <div class="col">
+                <div class="input-group mb-3">
+                @{
+                    fieldName = nameof(Model.FormModel.UserLogin);
+                    validityClass = Model.ValidationErrors == null
+                    ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                <span class="input-group-text" id="UserLogin-addon"><i class="bi bi-box-arrow-in-right"></i></span>
+                <input type="text" class="form-control @validityClass" value="@Model.FormModel?.UserLogin"
+                       name="UserLogin" placeholder="UserLogin"
+                       aria-label="UserLogin" aria-describedby="UserLogin-addon">
+
+                @if (hasData && !isValid && Model.ValidationErrors!.ContainsKey(fieldName))
+                {
+                    <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                    </div>
+                }
+                </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+            @{
+                fieldName = nameof(Model.FormModel.UserPassword);
+                validityClass = Model.ValidationErrors == null
+                ? ""
+                : Model.ValidationErrors!.ContainsKey(fieldName)
+                  ? "is-invalid"
+                  : "is-valid";
+            }
+            <span class="input-group-text" id="UserPassword-addon"><i class="bi bi-key"></i></span>
+            <input type="text" class="form-control @validityClass" value="@Model.FormModel?.UserPassword"
+                   name="UserPassword" placeholder="UserPassword" 
+                   aria-label="UserPassword" aria-describedby="UserPassword-addon">
+
+            @if (hasData && !isValid && Model.ValidationErrors!.ContainsKey(fieldName))
+            {
+                <div class="invalid-feedback">
+                    @Model.ValidationErrors[fieldName]
+                </div>
+            }
+            </div>
+        </div>
+        <div class="col">
+            <div class="input-group mb-3">
+            @{
+                fieldName = nameof(Model.FormModel.UserRepeat);
+                validityClass = Model.ValidationErrors == null
+                ? ""
+                : Model.ValidationErrors!.ContainsKey(fieldName)
+                  ? "is-invalid"
+                  : "is-valid";
+            }
+            <span class="input-group-text" id="UserRepeat-addon"><i class="bi bi-lock"></i></span>
+            <input type="text" class="form-control @validityClass" value="@Model.FormModel?.UserRepeat"
+                   name="UserRepeat" placeholder="UserRepeat" 
+                   aria-label="UserRepeat" aria-describedby="UserRepeat-addon">
+
+            @if (hasData && !isValid && Model.ValidationErrors!.ContainsKey(fieldName))
+            {
+                <div class="invalid-feedback">
+                    @Model.ValidationErrors[fieldName]
+                </div>
+            }
+            </div>
+        </div>
+    </div>
+
+    <!------------------------------------------------------/--------->
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+            @{
+                fieldName = nameof(Model.FormModel.BirthDate);
+                validityClass = Model.ValidationErrors == null
+                ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                        <span class="input-group-text" id="BirthDate-addon"><i class="bi bi-calendar"></i></span>
+                        <input type="date" class="form-control @validityClass" value="@Model.FormModel?.BirthDate?.ToString("yyyy-MM-dd")"
+                               name="BirthDate" aria-label="BirthDate" aria-describedby="BirthDate-addon">
+
+                @if (Model.ValidationErrors?.ContainsKey(fieldName) ?? false)
+                {
+                                <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                                </div>
+                }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                @{
+                    fieldName = nameof(Model.FormModel.ClothingSize);
+                    validityClass = Model.ValidationErrors == null
+                    ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                        <span class="input-group-text" id="ClothingSize-addon"><i class="bi bi-tag"></i></span>
+                        <input type="number" class="form-control @validityClass" value="@Model.FormModel?.ClothingSize"
+                               name="ClothingSize" placeholder="Розмір одягу" 
+                               aria-label="ClothingSize" aria-describedby="ClothingSize-addon">
+
+                @if (Model.ValidationErrors?.ContainsKey(fieldName) ?? false)
+                {
+                                <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                                </div>
+                }
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                @{
+                    fieldName = nameof(Model.FormModel.ShoeSize);
+                    validityClass = Model.ValidationErrors == null
+                    ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                        <span class="input-group-text" id="ShoeSize-addon"><i class="bi bi-shoe"></i></span>
+                        <input type="number" step="0.5" class="form-control @validityClass" value="@Model.FormModel?.ShoeSize"
+                               name="ShoeSize" placeholder="Розмір взуття"
+                               aria-label="ShoeSize" aria-describedby="ShoeSize-addon">
+
+                @if (Model.ValidationErrors?.ContainsKey(fieldName) ?? false)
+                {
+                                <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                                </div>
+                }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Размер пальца (кольцо) -->
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                @{
+                    fieldName = nameof(Model.FormModel.RingSize);
+                    validityClass = Model.ValidationErrors == null
+                    ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                        <span class="input-group-text" id="RingSize-addon"><i class="bi bi-gem"></i></span>
+                        <input type="number" step="0.1" class="form-control @validityClass" value="@Model.FormModel?.RingSize"
+                               name="RingSize" placeholder="Розмір пальця (кільця)"
+                               aria-label="RingSize" aria-describedby="RingSize-addon">
+
+                @if (Model.ValidationErrors?.ContainsKey(fieldName) ?? false)
+                {
+                                <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                                </div>
+                }
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                @{
+                    fieldName = nameof(Model.FormModel.SocialNetworkUrl);
+                    validityClass = Model.ValidationErrors == null
+                    ? ""
+                    : Model.ValidationErrors!.ContainsKey(fieldName)
+                      ? "is-invalid"
+                      : "is-valid";
+                }
+                        <span class="input-group-text" id="SocialNetworkUrl-addon"><i class="bi bi-globe"></i></span>
+                        <input type="url" class="form-control @validityClass" value="@Model.FormModel?.SocialNetworkUrl"
+                               name="SocialNetworkUrl" placeholder="Посилання на соц.мережу"
+                               aria-label="SocialNetworkUrl" aria-describedby="SocialNetworkUrl-addon">
+
+                @if (Model.ValidationErrors?.ContainsKey(fieldName) ?? false)
+                {
+                                <div class="invalid-feedback">
+                        @Model.ValidationErrors[fieldName]
+                                </div>
+                }
+                    </div>
+                </div>
+            </div>
+
+
+    <button class="btn btn-outline-secondary">Надіслати</button>
+</form>

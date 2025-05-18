@@ -1,0 +1,16 @@
+﻿@model IEnumerable<ASP_SPR311.Data.Entities.Product>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-4">Популярні товари</h1>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var product in Model)
+    {
+        @Html.DisplayFor(_ => product, "ProductCard")
+    }
+</div>
