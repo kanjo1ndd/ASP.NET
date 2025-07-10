@@ -2,6 +2,7 @@ using ASP_SPR311.Data;
 using ASP_SPR311.Services.Kdf;
 using ASP_SPR311.Services.Timestamp;
 using ASP_SPR311.Middleware;
+using ASP_SPR311.Services.AzureStorage;
 using Microsoft.EntityFrameworkCore;
 using ASP_SPR311.Services.Storage;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +24,8 @@ builder.Services.AddScoped<IPopularProductService, PopularProductService>();
 builder.Services.AddSingleton<OtpService>();
 
 builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSingleton<ICloudStorageService, CloudFileStorageService>();
 
 builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromMinutes(10);

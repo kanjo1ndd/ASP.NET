@@ -3,15 +3,17 @@ using ASP_SPR311.Data.Entities;
 using ASP_SPR311.Models.Admin;
 using ASP_SPR311.Services.Storage;
 using Microsoft.AspNetCore.Mvc;
+using ASP_SPR311.Services.AzureStorage;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
 namespace ASP_SPR311.Controllers
 {
-    public class AdminController(DataContext dataContext, IStorageService storageService) : Controller
+    public class AdminController(DataContext dataContext, IStorageService storageService, ICloudStorageService cloudStorage) : Controller
     {
         private readonly DataContext _dataContext = dataContext;
         private readonly IStorageService _storageService = storageService;
+        private readonly ICloudStorageService _cloudStorage;
         public IActionResult Index()
         {
             String? canCreate = HttpContext.User.Claims
@@ -86,7 +88,8 @@ namespace ASP_SPR311.Controllers
                 Name = formModel.Name,
                 Description = formModel.Description,
                 Slug = formModel.Slug,
-                ImageUrl = _storageService.SaveFile(formModel.Image)
+                //ImageUrl = _storageService.SaveFile(formModel.Image)
+                ImageUrl = _cloudStorage.SaveFile(formModel.Image)
             };
             _dataContext.Categories.Add(category);
             _dataContext.SaveChanges();
