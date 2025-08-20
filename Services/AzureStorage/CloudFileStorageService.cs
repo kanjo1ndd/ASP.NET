@@ -1,6 +1,7 @@
 ﻿namespace ASP_SPR311.Services.AzureStorage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Queues;
 
 public class CloudFileStorageService : ICloudStorageService
 {
@@ -8,7 +9,8 @@ public class CloudFileStorageService : ICloudStorageService
     private const string connectionString =
         "";
 
-    private const string containerName = "asp-storage";
+    private const string containerName = "big-images";
+    private const string queueName = "new-images";
 
     private BlobServiceClient blobService;
     private BlobContainerClient blobContainer;
@@ -34,6 +36,10 @@ public class CloudFileStorageService : ICloudStorageService
         string savedName = formFile.FileName;
         string fullName = directoryName + savedName;
         BlobClient createdBlob = blobContainer.GetBlobClient(savedName);
+        QueueServiceClient queueService = new QueueServiceClient(connectionString);
+        QueueClient queueClient = queueService.GetQueueClient(queueName);
+        queueClient.CreateIfNotExists();
+        queueClient.SendMessage(savedName);
         using (FileStream fs = File.OpenRead(fullName))
         {
             createdBlob.Upload(fs);
